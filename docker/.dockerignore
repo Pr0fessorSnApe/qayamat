@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.env
+data/
+reports/
+logs/
+node_modules/
+frontend/dist/
+.git/
+.gitignore
+*.md
+tests/
+.pytest_cache/
+.coverage

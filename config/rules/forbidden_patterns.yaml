@@ -1,0 +1,21 @@
+blocked_paths:
+  - /admin
+  - /wp-admin
+  - /phpmyadmin
+  - /server-status
+  - /.env
+  - /.git
+  - /backup
+  - /db
+
+destructive_patterns:
+  - "DROP TABLE"
+  - "DROP DATABASE"
+  - "TRUNCATE TABLE"
+  - "shutdown"
+  - "rm -rf"
+  - "del /f"
+  - "format c:"
+  - "> /etc/passwd"
+  - "mkfs"
+  - "dd if=/dev/zero"

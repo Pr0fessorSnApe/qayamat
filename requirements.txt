@@ -1,0 +1,101 @@
+# QAYAMAT — Python dependencies
+# Install: pip install -r requirements.txt  (or bash install.sh)
+# API keys + platform tokens: .env (see .env.example)
+# Features: SSTI verify, smuggling/cache, race tester, H1/BC submit, CVSS/bounty estimate
+
+# ── Core API ──────────────────────────────────────────────────────────────────
+fastapi==0.115.0
+uvicorn==0.32.0
+uvloop==0.22.1
+starlette==0.38.6
+httptools==0.7.1
+websockets==13.1
+python-multipart==0.0.12
+
+# ── HTTP / Async ──────────────────────────────────────────────────────────────
+httpx==0.27.2
+httpcore==1.0.9
+aiofiles==24.1.0
+anyio==4.13.0
+requests==2.32.3
+
+# ── Task queue (optional distributed workers) ─────────────────────────────────
+celery==5.4.0
+redis==5.2.0
+kombu==5.6.2
+billiard==4.2.4
+amqp==5.3.1
+vine==5.1.0
+
+# ── Validation & settings ─────────────────────────────────────────────────────
+pydantic==2.10.0
+pydantic-core==2.27.0
+pydantic-settings==2.6.1
+annotated-types==0.7.0
+
+# ── Graph / search (optional enterprise integrations) ─────────────────────────
+neo4j==5.26.0
+elasticsearch==8.15.0
+elastic-transport==8.17.1
+
+# ── AI backends (optional — improves triage & exclusions parsing) ─────────────
+openai==1.55.0
+anthropic>=0.39.0
+google-generativeai>=0.8.0
+
+# ── ML / anomaly detection ────────────────────────────────────────────────────
+numpy==2.1.3
+scipy==1.17.1
+scikit-learn==1.5.2
+joblib==1.5.3
+threadpoolctl==3.6.0
+
+# ── Browser & parsing ─────────────────────────────────────────────────────────
+playwright>=1.49.0
+dnspython>=2.6.0
+beautifulsoup4==4.12.3
+lxml==5.3.0
+soupsieve==2.8.3
+
+# ── Reporting ─────────────────────────────────────────────────────────────────
+jinja2==3.1.4
+mako==1.3.12
+markupsafe==3.0.3
+
+# ── Crypto ────────────────────────────────────────────────────────────────────
+cryptography==43.0.3
+cffi==2.0.0
+pycparser==3.0
+
+# ── CLI ───────────────────────────────────────────────────────────────────────
+click==8.1.7
+rich==13.9.4
+prompt_toolkit==3.0.52
+pygments==2.20.0
+click-didyoumean==0.3.1
+click-plugins==1.1.1.2
+click-repl==0.3.0
+wcwidth==0.7.0
+
+# ── Utilities ─────────────────────────────────────────────────────────────────
+python-dotenv==1.0.1
+pyyaml==6.0.2
+schedule==1.2.2
+tqdm==4.67.0
+python-dateutil==2.9.0.post0
+pytz==2026.2
+tzdata==2026.2
+six==1.17.0
+distro==1.9.0
+idna==3.15
+certifi==2026.5.20
+charset-normalizer==3.4.7
+urllib3==2.7.0
+packaging==26.2
+sniffio==1.3.1
+pyee==12.0.0
+markdown-it-py==4.2.0
+mdurl==0.1.2
+h11==0.16.0
+jiter==0.15.0
+watchfiles==1.2.0

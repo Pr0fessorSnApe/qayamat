@@ -1,0 +1,40 @@
+# Example bug bounty program profile — copy and customize
+program: example-corp
+targets:
+  - example.com
+  - "*.example.com"
+out_of_scope:
+  - thirdparty.example.com
+profile: safe
+rate_limit: 5
+rules: "Standard program rules — no DoS, no social engineering"
+
+nuclei_tags: "cve,misconfig,exposure,takeover"
+nuclei_exclude_tags: "dos,intrusive,fuzz"
+
+enabled_tools:
+  - subfinder
+  - httpx
+  - nuclei
+  - dalfox
+
+disabled_tools: []
+
+scan:
+  oob_enabled: true
+  takeover_verify: true
+  multi_role: false
+
+intel:
+  enabled: true
+
+# Bounty payout table (USD) for CVSS + $ estimator
+bounty_payouts:
+  critical: { min: 5000, max: 20000 }
+  high: { min: 1000, max: 8000 }
+  medium: { min: 250, max: 2500 }
+  low: { min: 100, max: 500 }
+
+# Platform submission (set tokens in .env)
+hackerone_team_handle: example-corp
+bugcrowd_program_code: ""

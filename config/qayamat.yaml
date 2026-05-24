@@ -1,0 +1,77 @@
+general:
+  data_dir: ./data
+  log_level: INFO
+  max_concurrency: 50
+
+ai:
+  backend: auto            # auto | openai | anthropic | gemini | ollama
+  backends: [openai, anthropic, gemini, ollama]
+  openai_model: gpt-4o
+  anthropic_model: claude-3-5-sonnet-20241022
+  gemini_model: gemini-1.5-flash
+  local_model: llama3
+  ollama_endpoint: http://localhost:11434
+
+validation:
+  enabled: true
+  min_heuristic_score: 0.65
+  use_ai_confirmation: true
+  ai_min_confidence: 0.78
+
+bugbounty:
+  enabled: true
+  min_confidence: 0.80
+  intelligent_exclusions: true
+  ssti_verify: true
+  http_smuggling: true
+  cache_poison: true
+  race_tester: true
+  nuclei_template_gen: true
+  platform_submit: true
+  bounty_estimate: true
+
+intel:
+  enabled: true
+  providers: [shodan, censys, otx, securitytrails, urlscan, virustotal]
+  github_max_repos: 25
+
+oob:
+  enabled: true
+  server: https://oast.pro
+
+scan:
+  dedup_findings: true
+  takeover_verify: true
+  multi_role_enabled: true
+  submission_reports: true
+
+monitor:
+  enabled: false
+  interval_hours: 24
+  webhook_url: ""
+
+notifications:
+  webhook_urls: []
+  slack_webhook: ""
+  discord_webhook: ""
+  telegram:
+    bot_token: ""
+    chat_id: ""
+
+redis:
+  url: redis://localhost:6379/0
+
+postgres:
+  url: postgresql://qayamat:qayamat_pass@localhost:5432/qayamat
+
+neo4j:
+  uri: bolt://localhost:7687
+  user: neo4j
+  password: qayamat_pass
+
+elastic:
+  hosts: http://localhost:9200
+
+tools:
+  go_path: /usr/local/go/bin
+  install_dir: /opt/qayamat/tools

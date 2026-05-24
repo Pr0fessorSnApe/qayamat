@@ -1,0 +1,131 @@
+version: '3.8'
+
+services:
+  qayamat-core:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: qayamat:latest
+    container_name: qayamat-core
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../data:/app/data
+      - ../reports:/app/reports
+    env_file:
+      - ../.env
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - POSTGRES_URL=postgresql://qayamat:qayamat_pass@postgres:5432/qayamat
+      - NEO4J_URI=bolt://neo4j:7687
+      - ELASTIC_HOST=http://elasticsearch:9200
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - qayamat-net
+
+  qayamat-worker:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.worker
+    image: qayamat-worker:latest
+    container_name: qayamat-worker
+    volumes:
+      - ../data:/app/data
+    env_file:
+      - ../.env
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - POSTGRES_URL=postgresql://qayamat:qayamat_pass@postgres:5432/qayamat
+    depends_on:
+      - redis
+      - postgres
+    restart: unless-stopped
+    networks:
+      - qayamat-net
+
+  redis:
+    image: redis:7-alpine
+    container_name: qayamat-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - qayamat-net
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: qayamat-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: qayamat
+      POSTGRES_USER: qayamat
+      POSTGRES_PASSWORD: qayamat_pass
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U qayamat"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - qayamat-net
+
+  neo4j:
+    image: neo4j:5-community
+    container_name: qayamat-neo4j
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      NEO4J_AUTH: neo4j/qayamat_pass
+      NEO4J_PLUGINS: '["apoc"]'
+      NEO4J_dbms_memory_heap_maxSize: 512m
+    volumes:
+      - neo4j-data:/data
+    restart: unless-stopped
+    networks:
+      - qayamat-net
+
+  elasticsearch:
+    image: elasticsearch:8.15.0
+    container_name: qayamat-elastic
+    ports:
+      - "9200:9200"
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: "false"
+      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+    volumes:
+      - elastic-data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:9200/_cluster/health | grep -q '\"status\":\"green\\|yellow\"'"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - qayamat-net
+
+volumes:
+  redis-data:
+  postgres-data:
+  neo4j-data:
+  elastic-data:
+
+networks:
+  qayamat-net:
+    driver: bridge

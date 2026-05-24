@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qayamat-core
+  namespace: qayamat
+  labels:
+    app: qayamat-core
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qayamat-core
+  template:
+    metadata:
+      labels:
+        app: qayamat-core
+    spec:
+      containers:
+      - name: core
+        image: qayamat:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+        envFrom:
+        - secretRef:
+            name: qayamat-secrets
+        env:
+        - name: REDIS_URL
+          value: redis://qayamat-redis:6379/0
+        - name: POSTGRES_URL
+          value: postgresql://qayamat:qayamat_pass@qayamat-postgres:5432/qayamat
+        volumeMounts:
+        - name: data
+          mountPath: /app/data
+        - name: reports
+          mountPath: /app/reports
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "2Gi"
+            cpu: "2"
+        livenessProbe:
+          httpGet:
+            path: /api/docs
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 30
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: qayamat-data-pvc
+      - name: reports
+        persistentVolumeClaim:
+          claimName: qayamat-reports-pvc

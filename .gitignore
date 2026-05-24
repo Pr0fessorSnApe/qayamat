@@ -1,0 +1,106 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+.eggs/
+build/
+dist/
+pip-wheel-metadata/
+
+# Virtual environments
+venv/
+env/
+.venv/
+ENV/
+
+# =========================
+# Secrets & environment
+# =========================
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+
+# =========================
+# QAYAMAT runtime data (local only)
+# =========================
+data/*
+!data/.gitkeep
+reports/
+logs/
+screenshots/
+tmp/
+temp/
+
+# Database & checkpoints (contain scan targets/findings)
+data/*.db
+data/*.sqlite3
+data/checkpoints/
+data/scope_snapshots/
+data/custom-nuclei/
+data/vault.key
+data/*.enc
+
+# =========================
+# Testing
+# =========================
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+.tox/
+.mypy_cache/
+.ruff_cache/
+
+# =========================
+# IDE
+# =========================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+# Frontend
+# =========================
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+
+# =========================
+# Docker
+# =========================
+docker-compose.override.yml
+
+# =========================
+# Go build artifacts
+# =========================
+go.sum
+qayamat-go-agent
+
+# =========================
+# OS
+# =========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# Cache
+# =========================
+.cache/

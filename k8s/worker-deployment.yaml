@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qayamat-worker
+  namespace: qayamat
+  labels:
+    app: qayamat-worker
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: qayamat-worker
+  template:
+    metadata:
+      labels:
+        app: qayamat-worker
+    spec:
+      containers:
+      - name: worker
+        image: qayamat-worker:latest
+        imagePullPolicy: IfNotPresent
+        command: ["celery", "-A", "agents.worker", "worker", "--loglevel=info", "--concurrency=4"]
+        envFrom:
+        - secretRef:
+            name: qayamat-secrets
+        env:
+        - name: REDIS_URL
+          value: redis://qayamat-redis:6379/0
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "1"

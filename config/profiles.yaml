@@ -1,0 +1,26 @@
+passive:
+  active_probing: false
+  max_requests_per_second: 1
+  allowed_methods: [GET, HEAD]
+  payload_severity: none
+
+safe:
+  active_probing: true
+  max_requests_per_second: 5
+  payload_severity: low
+
+balanced:
+  active_probing: true
+  max_requests_per_second: 20
+  payload_severity: medium
+
+aggressive:
+  active_probing: true
+  max_requests_per_second: 50
+  payload_severity: high
+
+red_team:
+  active_probing: true
+  max_requests_per_second: 100
+  payload_severity: critical
+  require_explicit_auth: true
