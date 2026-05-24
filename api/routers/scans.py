@@ -101,6 +101,7 @@ async def pause_scan(scan_id: int):
 @router.post("/scans/{scan_id}/resume")
 async def resume_scan(scan_id: int, background_tasks: BackgroundTasks):
     """Resume a paused scan from the last checkpoint."""
+    from core.scan_checkpoint import ScanCheckpoint
     scan = store.get_scan(scan_id)
     if not scan:
         raise HTTPException(status_code=404, detail="Scan not found")
@@ -221,7 +222,6 @@ async def _run_scan_pipeline(
 
     async def emit(payload: dict):
         await manager.broadcast({"scan_id": scan_id, **payload})
-        # Also push to scan-specific channel
         await manager.send_message(str(scan_id), {"scan_id": scan_id, **payload})
 
     try:
@@ -234,13 +234,13 @@ async def _run_scan_pipeline(
         from core.logger import AuditLogger
         from core.vault import Vault
         from core.scan_control import (
-    check_interrupt,
-    ScanCancelledError,
-    ScanPausedError,
-    clear_cancel,
-    on_phase_complete,
-)
-from core.scan_checkpoint import ScanCheckpoint
+            check_interrupt,
+            ScanCancelledError,
+            ScanPausedError,
+            clear_cancel,
+            on_phase_complete,
+        )
+        from core.scan_checkpoint import ScanCheckpoint
         from core.finding_validator import FindingValidator
         from core.playwright_scanner import PlaywrightScanner
         from workflows.recon import ReconWorkflow
@@ -452,7 +452,6 @@ from core.scan_checkpoint import ScanCheckpoint
 @router.websocket("/ws/scan/{scan_id}")
 async def websocket_scan(websocket: WebSocket, scan_id: str):
     await manager.connect(scan_id, websocket)
-    # Send current state immediately on connect
     try:
         scan_id_int = int(scan_id)
         scan = store.get_scan(scan_id_int)
